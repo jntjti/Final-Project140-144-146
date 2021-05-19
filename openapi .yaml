@@ -1,0 +1,193 @@
+openapi: 3.0.0
+info:
+  title: CS Books API
+  version: 1.0.0
+  description: >-
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque ut est
+    quam. Aliquam et pretium risus. Nullam dui nisl, imperdiet nec luctus at,
+    varius ac magna. Aliquam ut porta enim. Donec cursus pulvinar accumsan. Nam
+    vulputate laoreet faucibus. Quisque tempus venenatis suscipit. Donec non leo
+    iaculis metus placerat euismod id sed risus.
+  termsOfService: 'http://swagger.io/terms/'
+  contact:
+    email: chayanan.won@g.swu.ac.th
+tags:
+  - name: Book
+    description: Manage list of book
+servers:
+  - url: HTTPS
+  - url: HTTP
+paths:
+  /book/all:
+    get:
+      tags:
+        - Book
+      responses:
+        '200':
+          description: list of books
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/book_response'
+  '/book/{string:title}':
+    get:
+      tags:
+        - Book
+      parameters:
+        - in: path
+          name: 'string:title'
+          required: true
+          schema:
+            type: string
+            example: Flask
+      responses:
+        '200':
+          description: List of books with title filter
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/book_response'
+        '404':
+          description: unknow destinatnion
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  alert:
+                    type: string
+                    example: error 404.
+        '500':
+          description: '#/components/responses/500ApiError'
+  '/book/update/{string:id}':
+    put:
+      tags:
+        - Book
+      parameters:
+        - in: path
+          name: 'string:id'
+          required: true
+          schema:
+            type: string
+            example: 871871
+      responses:
+        '201':
+          description: Update Success
+        '500':
+          $ref: '#/components/responses/500ApiError'
+  /book/create:
+    post:
+      tags:
+        - Book
+      responses:
+        '201':
+          description: Create Success
+  '/book/delete/{string:id}':
+    delete:
+      tags:
+        - Book
+      parameters:
+        - in: path
+          name: 'string:id'
+          required: true
+          schema:
+            type: string
+            example: 871871
+      responses:
+        '204':
+          description: Resource deleted successfully
+components:
+  schemas:
+    book_response:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 1159142
+        title:
+          type: string
+          example: Agile Web Development with Rails
+        author:
+          type: string
+          example: 'Sam Ruby, Dave Thomas, David Heinemeier Hansson'
+        author_firstname:
+          type: string
+          example: John
+        author_lastname:
+          type: string
+          example: Doe
+        author_middlename:
+          type: string
+          example: null
+        categories:
+          type: string
+          example: web development
+        volume:
+          type: string
+          example: null
+        year:
+          type: string
+          example: 2010
+        edition:
+          type: string
+          example: fourth edition
+        language:
+          type: string
+          example: en
+        extensions:
+          type: string
+          example: pdf
+        pages:
+          type: string
+          example: 472
+        filesize:
+          type: string
+          example: 6937523
+        md5:
+          type: string
+          example: AE49D9BB94118632DF0691DF18706319
+        series:
+          type: string
+          example: null
+        periodical:
+          type: string
+          example: null
+        file_extension:
+          type: string
+          example: pdf
+        url:
+          type: string
+          example: 'http://bookzz.org/dl/1159142/643c75'
+        description:
+          type: string
+          example: null
+        cover:
+          type: string
+          example: 'http://libgen.org/covers/7/ae49d9bb94118632df0691df18706319-g.jpg'
+  responses:
+    200OK:
+      description: Success
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              statusCode:
+                type: string
+                example: 200
+              message:
+                type: string
+                example: This is success.
+    500ApiError:
+      description: This is unexpected
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              statusCode:
+                type: string
+                example: 500
+              message:
+                type: string
+                example: Internal server error
